@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+    environment{
+        name = "shubham"
+    }
+    parameters {
+        string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+        choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
+    }
+    stages {
+        stage('testing command') {
+            steps {
+                sh '''whoami
+                date
+                pwd'''
+            }
+        }
+        stage('print enviornment vsriable') {
+            environment {
+                name = 'adadfdjfd'
+            }
+            steps {
+                sh 'echo "${BUILD_ID}"'
+                sh 'echo "${name}"'
+                sh 'echo "${PERSON}"'
+                sh 'echo "${CHOICE}"'
+            }
+        }
+        stage('new') {
+            input {
+                message "should be continue?"
+                ok "yes we should"
+            }
+            steps {
+                echo123 'new pipeline'
+            }
+        }
+    }
+    post { 
+        always { 
+            echo 'I will always say Hello again!'
+        }
+        failure{
+            echo 'failure'
+        }
+        success{
+            echo 'success'
+        }
+    }
+}
+
